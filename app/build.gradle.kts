@@ -13,8 +13,8 @@ android {
         // 車機是 Android 13；從 33 起跳可省掉舊版相容分支
         minSdk = 33
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.1.0"
+        versionCode = 5
+        versionName = "1.1.1"
     }
 
     // 簽章放在專案資料夾旁邊的 car-dimmer-signing（不進版控；用 Dropbox 同步，每台電腦都用同一份）：
