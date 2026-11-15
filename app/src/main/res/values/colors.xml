@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 設計 token：取自全域 DESIGN.md（linear.app 基底），車機固定深色 -->
+<resources>
+    <color name="primary">#5E6AD2</color>
+    <color name="primary_hover">#828FFF</color>
+    <color name="ink">#F7F8F8</color>
+    <color name="ink_subtle">#8A8F98</color>
+    <color name="ink_tertiary">#62666D</color>
+    <color name="canvas">#010102</color>
+    <color name="surface_1">#0F1011</color>
+    <color name="surface_2">#141516</color>
+    <color name="hairline">#23252A</color>
+    <color name="hairline_strong">#34343A</color>
+    <color name="success">#27A644</color>
+    <color name="overlay">#000000</color>
+</resources>
