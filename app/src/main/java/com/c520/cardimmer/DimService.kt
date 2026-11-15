@@ -62,7 +62,7 @@ class DimService : Service() {
         super.onCreate()
         wm = getSystemService(WindowManager::class.java)
         getSystemService(NotificationManager::class.java).createNotificationChannel(
-            NotificationChannel(CHANNEL, "調暗開關", NotificationManager.IMPORTANCE_LOW).apply {
+            NotificationChannel(CHANNEL, L.t("調暗開關", "Dimmer switch"), NotificationManager.IMPORTANCE_LOW).apply {
                 setShowBadge(false)
             }
         )
@@ -152,11 +152,11 @@ class DimService : Service() {
         val p = Prefs.of(this)
         val enabled = Prefs.enabled(p)
         val text = when {
-            !Settings.canDrawOverlays(this) -> "尚未授權，點這裡開啟設定"
-            !enabled && Prefs.schedule(p) -> "已關閉，${Prefs.hhmm(Prefs.start(p))} 自動開啟"
-            !enabled -> "已關閉"
-            Prefs.schedule(p) -> "調暗中 ${minOf(Prefs.level(p), Prefs.maxPercent(this))}%（${Prefs.hhmm(Prefs.end(p))} 自動關閉）"
-            else -> "調暗中 ${minOf(Prefs.level(p), Prefs.maxPercent(this))}%"
+            !Settings.canDrawOverlays(this) -> L.t("尚未授權，點這裡開啟設定", "Permission needed. Tap to open settings")
+            !enabled && Prefs.schedule(p) -> L.t("已關閉，${Prefs.hhmm(Prefs.start(p))} 自動開啟", "Off. Turns on at ${Prefs.hhmm(Prefs.start(p))}")
+            !enabled -> L.t("已關閉", "Off")
+            Prefs.schedule(p) -> L.t("調暗中 ${minOf(Prefs.level(p), Prefs.maxPercent(this))}%（${Prefs.hhmm(Prefs.end(p))} 自動關閉）", "Dimming ${minOf(Prefs.level(p), Prefs.maxPercent(this))}% (turns off at ${Prefs.hhmm(Prefs.end(p))})")
+            else -> L.t("調暗中 ${minOf(Prefs.level(p), Prefs.maxPercent(this))}%", "Dimming ${minOf(Prefs.level(p), Prefs.maxPercent(this))}%")
         }
         lastNotifText = text
         val open = PendingIntent.getActivity(
@@ -169,7 +169,7 @@ class DimService : Service() {
         )
         return Notification.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_moon)
-            .setContentTitle("車機調暗")
+            .setContentTitle(getString(R.string.app_name))
             .setContentText(text)
             .setOngoing(true)
             .setContentIntent(open)
@@ -177,7 +177,7 @@ class DimService : Service() {
             .addAction(
                 Notification.Action.Builder(
                     Icon.createWithResource(this, R.drawable.ic_moon),
-                    if (enabled) "關閉" else "開啟", toggle,
+                    if (enabled) L.t("關閉", "Turn off") else L.t("開啟", "Turn on"), toggle,
                 ).build()
             )
             .build()

@@ -1,4 +1,6 @@
-# 車機調暗
+# 車機調暗 Car Dimmer
+
+**English:** Car Dimmer is a screen dimmer for Android head units: when minimum brightness still glares at night, it adds an adjustable dark layer. Big switch and slider, optional schedule. English and Traditional Chinese UI (follows the device language). Free, MIT, no network access. [Intro & download](https://c520.pages.dev/cardimmer/en/)
 
 給安卓車機用的螢幕調暗 App：車機亮度調到最低，晚上還是刺眼時，再蓋一層可以調深淺的暗色。免費、開源（MIT），不連網、沒有廣告。
 
@@ -11,6 +13,7 @@
 - 依時間自動（可關）：像夜燈，開始時間自動變暗、結束時間自動恢復，中途仍可手動開關。
 - 開機後照上次的設定自動啟動；調暗中可以從通知列關掉。
 - 暗色那一層不攔截觸控，導航、音樂等其他 App 照常使用。
+- 介面有繁體中文和英文，跟著裝置的語言（英文名稱 Car Dimmer）。程式裡中英文寫在一起：`L.t("中文", "English")`。
 
 ## 限制
 

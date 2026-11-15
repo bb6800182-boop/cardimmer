@@ -93,18 +93,18 @@ class MainActivity : Activity() {
         seek.progress = lv / 5
         seek.stateDescription = "$lv%"
         levelText.text = "$lv%"
-        maxNote.text = "最高 $max%（Android 觸控限制）。車機系統亮度先調到最低，效果最好。"
+        maxNote.text = L.t("最高 $max%（Android 觸控限制）。車機系統亮度先調到最低，效果最好。", "Max $max% (Android touch limit). Works best with the head unit's own brightness at minimum.")
 
         val sched = Prefs.schedule(p)
         val s = Prefs.hhmm(Prefs.start(p))
         val e = Prefs.hhmm(Prefs.end(p))
         schedSwitch.isChecked = sched
         startBtn.text = s
-        startBtn.contentDescription = "開始時間 $s"
+        startBtn.contentDescription = L.t("開始時間 $s", "Start time $s")
         endBtn.text = e
-        endBtn.contentDescription = "結束時間 $e"
+        endBtn.contentDescription = L.t("結束時間 $e", "End time $e")
         timeBox.alpha = if (sched) 1f else 0.4f
-        schedNote.text = if (sched) "每天 $s 自動開啟、$e 自動關閉，中途仍可手動開關。" else "關閉時只用上面的開關手動控制。"
+        schedNote.text = if (sched) L.t("每天 $s 自動開啟、$e 自動關閉，中途仍可手動開關。", "Turns on at $s and off at $e every day. You can still switch it by hand.") else L.t("關閉時只用上面的開關手動控制。", "When off, only the switch above controls dimming.")
         binding = false
     }
 
@@ -115,7 +115,7 @@ class MainActivity : Activity() {
             try {
                 startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
             } catch (e2: ActivityNotFoundException) {
-                Toast.makeText(this, "找不到授權頁，請到系統設定 > 應用程式 > 車機調暗，開啟「顯示在其他應用程式上層」", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, L.t("找不到授權頁，請到系統設定 > 應用程式 > 車機調暗，開啟「顯示在其他應用程式上層」", "Can't open the permission page. Go to Settings > Apps > Car Dimmer and allow \"Display over other apps\"."), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -216,7 +216,7 @@ class MainActivity : Activity() {
         }
         thumbOffset = dp(20)
         minHeight = dp(72)
-        contentDescription = "暗度"
+        contentDescription = L.t("暗度", "Dim level")
         setPadding(dp(24), 0, dp(24), 0)
         setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(s: SeekBar, v: Int, fromUser: Boolean) {
@@ -238,7 +238,7 @@ class MainActivity : Activity() {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
         }
-        val title = text("車機調暗", 28f, bold = true).apply {
+        val title = text(getString(R.string.app_name), 28f, bold = true).apply {
             val moon = getDrawable(R.drawable.ic_moon)!!.mutate().apply {
                 setTint(col(R.color.primary_hover)); setBounds(0, 0, dp(28), dp(28))
             }
@@ -246,17 +246,17 @@ class MainActivity : Activity() {
             compoundDrawablePadding = dp(12)
         }
         header.addView(title, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
-        permOk = text("權限已授予", 16f, R.color.success)
+        permOk = text(L.t("權限已授予", "Permission granted"), 16f, R.color.success)
         header.addView(permOk)
         root.addView(header)
         root.addView(gap(16))
 
         // 未授權時的提示
         permCard = card().apply {
-            addView(text("需要「顯示在其他應用程式上層」權限才能調暗畫面。", 20f))
+            addView(text(L.t("需要「顯示在其他應用程式上層」權限才能調暗畫面。", "Dimming needs the \"Display over other apps\" permission."), 20f))
             addView(gap(12))
             addView(Button(this@MainActivity).apply {
-                text = "前往授權"
+                text = L.t("前往授權", "Allow")
                 isAllCaps = false
                 stateListAnimator = null
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
@@ -272,7 +272,7 @@ class MainActivity : Activity() {
         root.addView(permCard, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply { bottomMargin = dp(16) })
 
         // 左卡：開關＋暗度
-        dimSwitch = bigSwitch("調暗") { on ->
+        dimSwitch = bigSwitch(L.t("調暗", "Dim")) { on ->
             if (on && !Settings.canDrawOverlays(this)) openOverlaySettings()
             save { putBoolean(Prefs.ENABLED, on) }
         }
@@ -285,7 +285,7 @@ class MainActivity : Activity() {
             addView(LinearLayout(this@MainActivity).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                addView(text("暗度", 20f, R.color.ink_subtle), LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
+                addView(text(L.t("暗度", "Dim level"), 20f, R.color.ink_subtle), LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
                 addView(levelText)
             })
             addView(seek, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
@@ -294,13 +294,13 @@ class MainActivity : Activity() {
         }
 
         // 右卡：依時間自動
-        schedSwitch = bigSwitch("依時間自動") { on -> save { putBoolean(Prefs.SCHEDULE, on) } }
+        schedSwitch = bigSwitch(L.t("依時間自動", "Schedule")) { on -> save { putBoolean(Prefs.SCHEDULE, on) } }
         startBtn = timeButton { pickTime(Prefs.START, Prefs.start(p)) }
         endBtn = timeButton { pickTime(Prefs.END, Prefs.end(p)) }
         timeBox = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            addView(timeRow("開始", startBtn))
-            addView(timeRow("結束", endBtn))
+            addView(timeRow(L.t("開始", "Start"), startBtn))
+            addView(timeRow(L.t("結束", "End"), endBtn))
         }
         schedNote = text("", 15f, R.color.ink_subtle)
         val right = card().apply {
@@ -327,16 +327,16 @@ class MainActivity : Activity() {
 
         // 關於：聯繫作者、更多軟體（只開寄信的 App 和瀏覽器；車機上沒有的話會顯示信箱和網址）
         root.addView(gap(24))
-        root.addView(text("關於", 22f, bold = true))
-        root.addView(text("車機調暗 ${About.version(this)}", 18f, R.color.ink_subtle))
+        root.addView(text(L.t("關於", "About"), 22f, bold = true))
+        root.addView(text("${getString(R.string.app_name)} ${About.version(this)}", 18f, R.color.ink_subtle))
         root.addView(gap(8))
         root.addView(text(About.CONTACT_TEXT, 18f, R.color.ink_subtle))
         root.addView(text(About.MORE_TEXT, 18f, R.color.ink_subtle))
         root.addView(gap(12))
         root.addView(LinearLayout(this).apply {
-            addView(timeButton { About.mail(this@MainActivity, "車機調暗") }.apply { text = "寄信給作者"; setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f) })
+            addView(timeButton { About.mail(this@MainActivity, getString(R.string.app_name)) }.apply { text = L.t("寄信給作者", "Email the author"); setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f) })
             addView(
-                timeButton { About.more(this@MainActivity) }.apply { text = "更多軟體"; setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f) },
+                timeButton { About.more(this@MainActivity) }.apply { text = L.t("更多軟體", "More apps"); setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f) },
                 LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply { marginStart = dp(16) },
             )
         })
